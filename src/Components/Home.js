@@ -1,6 +1,6 @@
 import {Helmet} from "react-helmet" ; 
 import './Home.css'
-import TradingViewWidget, {Themes} from 'react-tradingview-widget';
+import TradingViewWidget, {Themes, BarStyles, HEIKIN_ASHI} from 'react-tradingview-widget';
 function Home() {
     
     const symbol = "NYSE:PLTR"
@@ -10,11 +10,12 @@ function Home() {
     <div className="chart">
         
            
-            <TradingViewWidget
+            <TradingViewWidget 
             symbol={symbol}
-            theme={Themes.DARK}
-            locale="fr"
-            autosize />
+            theme={Themes.Light}
+            locale="en"
+            autosize 
+            BarStyles={HEIKIN_ASHI}/>
            
         
     </div>
