@@ -1,0 +1,7 @@
+.chart{
+    padding:20px ;
+    width: 900px ; 
+    height: 600px ; 
+    display:inline-flex;
+    margin-top: 20px;
+}
