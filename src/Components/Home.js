@@ -3,7 +3,7 @@ import './Home.css'
 import TradingViewWidget, {Themes, BarStyles, HEIKIN_ASHI} from 'react-tradingview-widget';
 function Home() {
     
-    const symbol = "NYSE:PLTR"
+    const symbol = "NASDAQ:TSLA"
    
 
     return (
@@ -15,7 +15,7 @@ function Home() {
             theme={Themes.Light}
             locale="en"
             autosize 
-            BarStyles={HEIKIN_ASHI}/>
+            BarStyles={"HEIKIN_ASHI"}/>
            
         
     </div>
