@@ -38,18 +38,17 @@ class Register extends Component {
     }
 
     registerFunction(name, email, password) {
-        var defaultStock = {
-            Ticker: "AAPL",
-            Market: "NASDAQ",
-            Notes: ["Buy"]
-        }
-        
+        var Ticker= "AAPL"
+        var Market= "NASDAQ"
+        var Notes= ["Buy", "Sell"]
+
+
         var name = name
-        var email= email
+        var email = email
         var pass = password
-        
-        
-        axios.post(`/api/users/register/${name}/${email}/${pass}/${defaultStock}`).then(res => {
+
+
+        axios.post(`/api/users/register/newUser/${name}/${email}/${pass}/stock/${Ticker}/${Market}/Notes/${Notes}`).then(res => {
             console.log(res);
         }).catch((err) => {
             console.log(err);
