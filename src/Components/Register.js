@@ -1,91 +1,308 @@
-import React, { useState } from 'react';
-import validator from 'validator'; 
-import Navbar from './Navbar'
+import React, { Component } from 'react';
+import { validateFields } from './Validation';
+import classnames from 'classnames';
+import './Register.css' ;
 
-import './Register.css'
-function Register() {
+const initialState = {
+    name: {
+        value: '',
+        validateOnChange: false,
+        error: ''
+    },
+    email: {
+        value: '',
+        validateOnChange: false,
+        error: ''
+    },
+    password: {
+        value: '',
+        validateOnChange: false,
+        error: ''
+    },
+    confirmPassword: {
+        value: "",
+        validateOnChange: false,
+        error: ""
+    },
 
-    const [pass, setPass] = useState('');
-    const [confirmPass, setConfirmPass] = useState('');
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    submitCalled: false,
+    allFieldsValidated: false
+};
 
-
-    function loginFunction(event) {
-        event.preventDefault();
-        console.log("this is pass" + pass);
+class Register extends Component {
+    constructor(props) {
+        super(props);
+        this.state = initialState;
     }
 
-    function validateName(name) {
+    registerFunction(name, email, password) {
+        return console.log("setup register function: " + name + " " + email + " " + password);
+    }
 
-        if (validator.isEmpty(name)){
-            return "Name is required"; 
+    /*
+     * validates the field onBlur if sumbit button is not clicked
+     * set the validateOnChange to true for that field
+     * check for error
+     */
+    handleBlur(validationFunc, evt) {
+        const field = evt.target.name;
+        // validate onBlur only when validateOnChange for that field is false
+        // because if validateOnChange is already true there is no need to validate onBlur
+        if (
+            this.state[field]['validateOnChange'] === false &&
+            this.state.submitCalled === false
+        ) {
+            this.setState(state => ({
+                [field]: {
+                    ...state[field],
+                    validateOnChange: true,
+                    error: validationFunc(state[field].value)
+                }
+            }));
         }
-        else {
-            return false; 
+        return;
+    }
+
+    /*
+     * update the value in state for that field
+     * check for error if validateOnChange is true
+     */
+    handleChange(validationFunc, evt) {
+        const field = evt.target.name;
+        const fieldVal = evt.target.value;
+        this.setState(state => ({
+            [field]: {
+                ...state[field],
+                value: fieldVal,
+                error: state[field]['validateOnChange'] ? validationFunc(fieldVal) : ''
+            }
+        }));
+    } 
+
+    handleConfirmPassChange(validationFunc, evt, pass){
+        const field = evt.target.name;
+        const fieldVal = evt.target.value;
+        console.log(`confirmPassChange ${pass} ${fieldVal} `);
+        this.setState(state => ({
+            [field]: {
+                ...state[field],
+                value: fieldVal,
+                error: state[field]['validateOnChange'] ? validationFunc(pass, fieldVal) : ''
+            }
+        }));
+    }
+
+    handleConfirmPassBlur(validationFunc, evt, pass){
+       
+        const field = evt.target.name;
+        // validate onBlur only when validateOnChange for that field is false
+        // because if validateOnChange is already true there is no need to validate onBlur
+        if (
+            this.state[field]['validateOnChange'] === false &&
+            this.state.submitCalled === false
+        ) {
+            this.setState(state => ({
+                [field]: {
+                    ...state[field],
+                    validateOnChange: true,
+                    error: validationFunc(pass , state[field].value)
+                }
+            }));
+        }
+        return;
+    }
+
+    /*
+     * validate all fields
+     * check if all fields are valid if yes then submit the Form
+     * otherwise set errors for the feilds in the state
+     */
+    handleSubmit(evt) {
+        evt.preventDefault();
+        // validate all fields
+        const { name, email, password, confirmPassword } = this.state;
+        const nameError = validateFields.validateName(name.value);
+        const emailError = validateFields.validateEmail(email.value);
+        const passwordError = validateFields.validatePassword(password.value);
+        console.log(`handle submit ${confirmPassword.value} ${password.value} `)
+        const confirmPasswordError = validateFields.validateConfirmPassword(password.value , confirmPassword.value);
+        if ([nameError, emailError, passwordError, confirmPasswordError].every(e => e === false)) {
+            // no errors submit the form
+            this.registerFunction(name, email, password);
+
+            // clear state and show all fields are validated
+            this.setState({ ...initialState, allFieldsValidated: true });
+            this.showAllFieldsValidated();
+        } else {
+            // update the state with errors
+            this.setState(state => ({
+                name: {
+                    ...state.name,
+                    validateOnChange: true,
+                    error: nameError
+                },
+                email: {
+                    ...state.email,
+                    validateOnChange: true,
+                    error: emailError
+                },
+                password: {
+                    ...state.password,
+                    validateOnChange: true,
+                    error: passwordError
+                },
+                confirmPassword: {
+                    ...state.confirmPassword,
+                    validateOnChange: true,
+                    error: confirmPasswordError
+                }
+            }));
         }
     }
 
-    function validateEmail(email){
-        if (validator.isEmpty(email)){
-            return "Email is required"
-        }
-        else if (!validator.isEmail(email)){
-            return "Invalid Email"
-        }
-        else {
-            return false; 
-        }
+    showAllFieldsValidated() {
+        setTimeout(() => {
+            this.setState({ allFieldsValidated: false });
+        }, 1500);
     }
 
-    function validatePassword(pass, confirmPass){
-        if (validator.isEmpty(pass)){
-            return "Password is required"
-        }
-        else if (!validator.isLength(pass, {min : 8})){
-            return "Password must be a minimum of 8 characters"
-        }
-        else if (!validator.equals(pass, confirmPass)){
-            return "Passwords must match"
-        }
+    moveToLogin() {
+        window.location.href = "/login/"
     }
 
-    return (
-        <div className="Login" style={{ padding: '15px' }}>
 
-            <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <div className="box">
-                        <form class="needs-validation" onSubmit={loginFunction} novalidate>
-                            <div class="form-floating">
-                                <input type="text" for="validationCustom01" value={name} onChange={(e) => { setName(e.target.value) }} class="form-control" id="floatingInput" placeholder="Name" style={{ backgroundColor: "rgb(238,238,238)" }} />
+
+    render() {
+        const { name, email, password, confirmPassword, allFieldsValidated } = this.state;
+        return (
+            <div className="Form col-md-8 col-lg-6">
+                <div className="card">
+
+                        <h4 className="card-title text-center">Sign Up</h4>
+                  
+
+                    <div className="card-body">
+                        {allFieldsValidated && (
+                            <p className="text-success text-center">
+                                Success, All fields are validated
+                            </p>
+                        )}
+
+                        {/* Form Starts Here */}
+                        <form onSubmit={evt => this.handleSubmit(evt)}>
+
+                            {/* Name field */}
+                            <div className="form-group">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={name.value}
+                                    placeholder="Enter your name"
+                                    className={classnames(
+                                        'form-control',
+                                        { 'is-valid': name.error === false },
+                                        { 'is-invalid': name.error }
+                                    )}
+                                    onChange={evt =>
+                                        this.handleChange(validateFields.validateName, evt)
+                                    }
+                                    onBlur={evt =>
+                                        this.handleBlur(validateFields.validateName, evt)
+                                    }
+                                />
+                                <div className="invalid-feedback">{name.error}</div>
                             </div>
-                            <div class="form-floating md-3">
-                                <input type="email" value={email} onChange={(e) => { setEmail(e.target.value) }}
-                                    class="form-control" id="floatingInput" placeholder="Email"
-                                    style={{ backgroundColor: "rgb(238,238,238)" }} />
+
+                            {/* Email field */}
+                            <div className="form-group">
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={email.value}
+                                    placeholder="Enter your email"
+                                    className={classnames(
+                                        'form-control',
+                                        { 'is-valid': email.error === false },
+                                        { 'is-invalid': email.error }
+                                    )}
+                                    onChange={evt =>
+                                        this.handleChange(validateFields.validateEmail, evt)
+                                    }
+                                    onBlur={evt =>
+                                        this.handleBlur(validateFields.validateEmail, evt)
+                                    }
+                                />
+                                <div className="invalid-feedback">{email.error}</div>
                             </div>
-                            <div class="form-floating">
-                                <input type="password" value={pass} onChange={(e) => { setPass(e.target.value) }}
-                                    class="form-control" id="floatingPassword" placeholder="Password"
-                                    style={{ backgroundColor: "rgb(238,238,238)" }} />
+
+                            {/* Password field */}
+                            <div className="form-group">
+                                <input
+                                    type="password"
+                                    name="password"
+                                    value={password.value}
+                                    placeholder="Enter your password"
+                                    className={classnames(
+                                        'form-control',
+                                        { 'is-valid': password.error === false },
+                                        { 'is-invalid': password.error }
+                                    )}
+                                    onChange={evt =>
+                                        this.handleChange(validateFields.validatePassword, evt)
+                                    }
+                                    onBlur={evt =>
+                                        this.handleBlur(validateFields.validatePassword, evt)
+                                    }
+                                />
+                                <div className="invalid-feedback">{password.error}</div>
                             </div>
-                            <div class="form-floating">
-                                <input type="password" value={confirmPass} onChange={(e) => { setConfirmPass(e.target.value) }}
-                                    class="form-control" id="floatingPassword" placeholder="Confirm Password"
-                                    style={{ backgroundColor: "rgb(238,238,238)" }} />
+                            {/* ConfirmPassword field */}
+                            <div className="form-group">
+
+                                <input
+                                    type="password"
+                                    name="confirmPassword"
+                                    value={confirmPassword.value}
+                                    placeholder="Confirm"
+                                    className={classnames(
+                                        'form-control',
+                                        { 'is-valid': confirmPassword.error === false },
+                                        { 'is-invalid': confirmPassword.error }
+                                    )}
+                                    onChange={evt =>
+                                        this.handleConfirmPassChange(validateFields.validateConfirmPassword, evt, password.value)
+                                    }
+                                    onBlur={evt =>
+                                        this.handleConfirmPassBlur(validateFields.validateConfirmPassword, evt , password.value)
+                                    }
+                                />
+                                <div className="invalid-feedback">{confirmPassword.error}</div>
                             </div>
-                            <div class="submit">
-                                <button type="submit" class="btn btn-primary">Login</button>
-                            </div>
+
+
+                            <button className="btn btn-light "
+                                onClick={this.moveToLogin}
+                                style={{margin: '25px'}}>
+                                Login
+                            </button>
+
+
+
+                            <button
+                                type="submit"
+                                className="btn btn-primary "
+                                onMouseDown={() => this.setState({ submitCalled: true })}>
+                                Sign Up
+                            </button>
+
+
 
                         </form>
                     </div>
                 </div>
             </div>
-        </div>
-    );
+        );
+    }
 }
 
-
-export default Register; 
+export default Register;

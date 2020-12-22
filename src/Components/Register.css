@@ -1,5 +1,9 @@
-.form-control{
-    margin-top: 10px;
-    background-color: rgb(238,238,238); 
+.card{
+    margin-top: 20vh;
+    width:50vw; 
+    left: 25vw;
+}
 
+.card-title{
+    margin-top: 2vh; 
 }
