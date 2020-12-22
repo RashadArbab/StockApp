@@ -19,12 +19,12 @@ function Login() {
         <div className="box">
         <form onSubmit={loginFunction}>
         <div class="form-floating mb-3">
-        <input type="username" value={email} onChange={(e)=>{setEmail(e.target.value)}} class="form-control" id="floatingInput" placeholder="username" style={{backgroundColor: "#eeeeee"}}/>
+        <input type="username" value={email} onChange={(e)=>{setEmail(e.target.value)}} class="form-control" id="floatingInput" placeholder="username" style={{backgroundColor: "rgb(238,238,238)"}}/>
         </div>
         <div class="form-floating">
         <input type="password" value={pass} onChange={(e)=>{setPass(e.target.value)}} class="form-control" id="floatingPassword" placeholder="Password" style={{backgroundColor: "#eeeeee"  }}/>
         <div class="submit">
-        <button type="submit" class="btn btn-primary" >Submit</button>
+        <button type="submit" class="btn btn-primary">Login</button>
         </div>
         </div>
         </form>

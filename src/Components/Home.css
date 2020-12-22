@@ -1,7 +1,17 @@
-.chart{
-    padding:20px ;
-    width: 900px ; 
-    height: 600px ; 
-    display:inline-flex;
-    margin-top: 20px;
+.tradingView{
+    display: block;
+    margin-top: 10vh; 
+    margin-left: auto;
+    margin-right: auto;
+    width: 75vw;
+    height:60vh; 
+    border-radius: 5px;
+}
+
+.chartButtons{
+    display: inline-flex;  
+}
+
+.changeButton{
+    padding:10px;
 }
