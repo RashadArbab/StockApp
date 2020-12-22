@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { validateFields } from './Validation';
 import classnames from 'classnames';
-import './Register.css' ;
+import axios from 'axios';
+import './Register.css';
 
 const initialState = {
     name: {
         value: '',
-        validateOnChange: false,
+        validateOnChange:
+            false,
         error: ''
     },
     email: {
@@ -36,7 +38,22 @@ class Register extends Component {
     }
 
     registerFunction(name, email, password) {
-        return console.log("setup register function: " + name + " " + email + " " + password);
+        var defaultStock = {
+            Ticker: "AAPL",
+            Market: "NASDAQ",
+            Notes: ["Buy"]
+        }
+        
+        var name = name
+        var email= email
+        var pass = password
+        
+        
+        axios.post(`/api/users/register/${name}/${email}/${pass}/${defaultStock}`).then(res => {
+            console.log(res);
+        }).catch((err) => {
+            console.log(err);
+        })
     }
 
     /*
@@ -77,9 +94,9 @@ class Register extends Component {
                 error: state[field]['validateOnChange'] ? validationFunc(fieldVal) : ''
             }
         }));
-    } 
+    }
 
-    handleConfirmPassChange(validationFunc, evt, pass){
+    handleConfirmPassChange(validationFunc, evt, pass) {
         const field = evt.target.name;
         const fieldVal = evt.target.value;
         console.log(`confirmPassChange ${pass} ${fieldVal} `);
@@ -92,8 +109,8 @@ class Register extends Component {
         }));
     }
 
-    handleConfirmPassBlur(validationFunc, evt, pass){
-       
+    handleConfirmPassBlur(validationFunc, evt, pass) {
+
         const field = evt.target.name;
         // validate onBlur only when validateOnChange for that field is false
         // because if validateOnChange is already true there is no need to validate onBlur
@@ -105,7 +122,7 @@ class Register extends Component {
                 [field]: {
                     ...state[field],
                     validateOnChange: true,
-                    error: validationFunc(pass , state[field].value)
+                    error: validationFunc(pass, state[field].value)
                 }
             }));
         }
@@ -125,10 +142,10 @@ class Register extends Component {
         const emailError = validateFields.validateEmail(email.value);
         const passwordError = validateFields.validatePassword(password.value);
         console.log(`handle submit ${confirmPassword.value} ${password.value} `)
-        const confirmPasswordError = validateFields.validateConfirmPassword(password.value , confirmPassword.value);
+        const confirmPasswordError = validateFields.validateConfirmPassword(password.value, confirmPassword.value);
         if ([nameError, emailError, passwordError, confirmPasswordError].every(e => e === false)) {
             // no errors submit the form
-            this.registerFunction(name, email, password);
+            this.registerFunction(name.value, email.value, password.value);
 
             // clear state and show all fields are validated
             this.setState({ ...initialState, allFieldsValidated: true });
@@ -178,8 +195,8 @@ class Register extends Component {
             <div className="Form col-md-8 col-lg-6">
                 <div className="card">
 
-                        <h4 className="card-title text-center">Sign Up</h4>
-                  
+                    <h4 className="card-title text-center">Sign Up</h4>
+
 
                     <div className="card-body">
                         {allFieldsValidated && (
@@ -273,7 +290,7 @@ class Register extends Component {
                                         this.handleConfirmPassChange(validateFields.validateConfirmPassword, evt, password.value)
                                     }
                                     onBlur={evt =>
-                                        this.handleConfirmPassBlur(validateFields.validateConfirmPassword, evt , password.value)
+                                        this.handleConfirmPassBlur(validateFields.validateConfirmPassword, evt, password.value)
                                     }
                                 />
                                 <div className="invalid-feedback">{confirmPassword.error}</div>
@@ -282,7 +299,7 @@ class Register extends Component {
 
                             <button className="btn btn-light "
                                 onClick={this.moveToLogin}
-                                style={{margin: '25px'}}>
+                                style={{ margin: '25px' }}>
                                 Login
                             </button>
 
