@@ -1,37 +1,34 @@
-import React, { Component, useContext } from 'react';
+import React, { Component, useContext , useState} from 'react';
 import { validateFields } from './Validation';
 import classnames from 'classnames';
 import { UserContext } from './userContext';
-import './Login.css' ;
+import './Login.css';
 
-const initialState = {
-    
-    email: {
+
+
+function Login() {
+
+    const [email, setEmail] = useState({
         value: '',
         validateOnChange: false,
         error: ''
-    },
-    password: {
+    });
+
+    const [password, setPassword] = useState({
         value: '',
         validateOnChange: false,
         error: ''
-    },
+    });
 
-    submitCalled: false,
-    allFieldsValidated: false
-};
+    const [submitCalled, setSubmitCalled] = useState(false);
+    const [allFieldsValidated, setAllFieldsValidated] = useState(false);
 
-class Login extends Component {
 
-    static contextType = UserContext; 
 
-    constructor(props) {
-        super(props);
-        this.state = initialState;
-    }
 
-    loginFunction(email, password) {
-        return console.log(`setup Login function: ${email.value} ${password.value}`);
+
+    function loginFunction(email, password) {
+        return (console.log(`setup Login function: ${email} ${password}`));
     }
 
     /*
@@ -39,186 +36,221 @@ class Login extends Component {
      * set the validateOnChange to true for that field
      * check for error
      */
-    handleBlur(validationFunc, evt) {
+    function handleBlur(validationFunc, evt) {
         const field = evt.target.name;
-        // validate onBlur only when validateOnChange for that field is false
-        // because if validateOnChange is already true there is no need to validate onBlur
-        if (
-            this.state[field]['validateOnChange'] === false &&
-            this.state.submitCalled === false
-        ) {
-            this.setState(state => ({
-                [field]: {
-                    ...state[field],
-                    validateOnChange: true,
-                    error: validationFunc(state[field].value)
-                }
-            }));
+
+        if (field === 'email' && email.validateOnChange === false && submitCalled === false){
+            var temp = {
+                value:email.value,
+                validateOnChange : true , 
+                error:validationFunc(email.value)
+            }
+            setEmail(temp); 
         }
+        else if (field === 'password' && password.validateOnChange === false && submitCalled === false) {
+            var temp = {
+                value:password.value,
+                validateOnChange : true , 
+                error:validationFunc(password.value)
+            }
+            setPassword(temp); 
+        }
+        
         return;
     }
+
+    
 
     /*
      * update the value in state for that field
      * check for error if validateOnChange is true
      */
-    handleChange(validationFunc, evt) {
+    function handleChange(validationFunc, evt) {
+        console.log(`handle change called`)
         const field = evt.target.name;
+        console.log(field); 
         const fieldVal = evt.target.value;
-        this.setState(state => ({
-            [field]: {
-                ...state[field],
-                value: fieldVal,
-                error: state[field]['validateOnChange'] ? validationFunc(fieldVal) : ''
+        console.log(email.value);
+
+        if (field === 'email' && email.validateOnChange === true){
+            console.log('opta')
+            var temp = {
+                value:fieldVal ,
+                validateOnChange : email.validateOnChange , 
+                error:validationFunc(fieldVal)
             }
-        }));
-    } 
+            setEmail(temp)
+        }
+        else if (field === 'email' && email.validateOnChange=== false){
+            console.log('optb')
+            var temp = {
+               
+                value:fieldVal ,
+                validateOnChange : email.validateOnChange , 
+                error:'' 
+            }
+            
+            setEmail(temp); 
+        }
+        if (field === 'password' && password.validateOnChange === true){
+            console.log('optc')
+            var temp = {
+                value:fieldVal ,
+                validateOnChange : email.validateOnChange , 
+                error:validationFunc(fieldVal)
+            }
+            setPassword(temp)
+        }
+        else if (field === 'password' && password.validateOnChange=== false){
+            console.log('optd')
+            var temp = {
+                value:fieldVal ,
+                validateOnChange : email.validateOnChange , 
+                error:'' 
+            }
+            setPassword(temp); 
+        }
 
-   
 
-    
+       
+    }
+
+
+
+
 
     /*
      * validate all fields
      * check if all fields are valid if yes then submit the Form
      * otherwise set errors for the feilds in the state
      */
-    handleSubmit(evt) {
+    function handleSubmit(evt) {
+        console.log("handle submit called");
         evt.preventDefault();
         // validate all fields
-        const {  email, password } = this.state;
+        console.log(`${email.value}  ${password.value}`);
         const emailError = validateFields.validateEmail(email.value);
         const passwordError = validateFields.validatePassword(password.value);
-      
+
         if ([emailError, passwordError].every(e => e === false)) {
             // no errors submit the form
-            this.loginFunction( email, password);
+            console.log(`email error and pass word error are false`)
+            loginFunction(email.value, password.value);
 
             // clear state and show all fields are validated
-            this.setState({ ...initialState, allFieldsValidated: true });
-            this.showAllFieldsValidated();
+            setAllFieldsValidated(true); 
+            showAllFieldsValidated(); 
         } else {
             // update the state with errors
-            this.setState(state => ({
-              
-                email: {
-                    ...state.email,
-                    validateOnChange: true,
-                    error: emailError
-                },
-                password: {
-                    ...state.password,
-                    validateOnChange: true,
-                    error: passwordError
-                }
-            }));
+            
+            setEmail(email.value , true , emailError) ; 
+            setPassword(password.value , true , passwordError); 
+            
         }
     }
 
-    showAllFieldsValidated() {
+    function showAllFieldsValidated() {
         setTimeout(() => {
-            this.setState({ allFieldsValidated: false });
+            setAllFieldsValidated(false); 
         }, 1500);
     }
 
-    moveToRegister() {
+    function moveToRegister() {
         window.location.href = "/Register/"
     }
 
 
 
-    render() {
-        const {email, password, allFieldsValidated } = this.state;
-        const user = this.context
-        console.log(user) 
-        return (
-            <div className="Form col-md-8 col-lg-6">
-                <div className="card">
 
-                        <h4 className="card-title text-center">Sign Up</h4>
-                  
+    
+    return (
+        <div className="Form col-md-8 col-lg-6">
+            <div className="card">
 
-                    <div className="card-body">
-                        {allFieldsValidated && (
-                            <p className="text-success text-center">
-                                Success, All fields are validated
-                            </p>
-                        )}
-
-                        {/* Form Starts Here */}
-                        <form onSubmit={evt => this.handleSubmit(evt)}>
-
-                            
-
-                            {/* Email field */}
-                            <div className="form-group">
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={email.value}
-                                    placeholder={user}
-                                    className={classnames(
-                                        'form-control',
-                                        { 'is-valid': email.error === false },
-                                        { 'is-invalid': email.error }
-                                    )}
-                                    onChange={evt =>
-                                        this.handleChange(validateFields.validateEmail, evt)
-                                    }
-                                    onBlur={evt =>
-                                        this.handleBlur(validateFields.validateEmail, evt)
-                                    }
-                                />
-                                <div className="invalid-feedback">{email.error}</div>
-                            </div>
-
-                            {/* Password field */}
-                            <div className="form-group">
-                                <input
-                                    type="password"
-                                    name="password"
-                                    value={password.value}
-                                    placeholder="Enter your password"
-                                    className={classnames(
-                                        'form-control',
-                                        { 'is-valid': password.error === false },
-                                        { 'is-invalid': password.error }
-                                    )}
-                                    onChange={evt =>
-                                        this.handleChange(validateFields.validatePassword, evt)
-                                    }
-                                    onBlur={evt =>
-                                        this.handleBlur(validateFields.validatePassword, evt)
-                                    }
-                                />
-                                <div className="invalid-feedback">{password.error}</div>
-                            </div>
-                            
+                <h4 className="card-title text-center">Sign Up</h4>
 
 
-                            <button className="btn btn-light "
-                                onClick={this.moveToRegister}
-                                style={{margin: '25px'}}>
-                                Sign Up
+                <div className="card-body">
+                    {allFieldsValidated && (
+                        <p className="text-success text-center">
+                            Success, All fields are validated
+                        </p>
+                    )}
+
+                    {/* Form Starts Here */}
+                    <form onSubmit={evt => handleSubmit(evt)}>
+
+
+
+                        {/* Email field */}
+                        <div className="form-group">
+                            <input
+                                type="email"
+                                name="email"
+                                value={email.value}
+                                placeholder={"Enter email here"}
+                                className={classnames(
+                                    'form-control',
+                                    { 'is-valid': email.error === false },
+                                    { 'is-invalid': email.error }
+                                )}
+                                onChange={evt =>
+                                    handleChange(validateFields.validateEmail, evt)
+                                }
+                                onBlur={evt =>
+                                    handleBlur(validateFields.validateEmail, evt)
+                                }
+                            />
+                            <div className="invalid-feedback">{email.error}</div>
+                        </div>
+
+                        {/* Password field */}
+                        <div className="form-group">
+                            <input
+                                type="password"
+                                name="password"
+                                value={password.value}
+                                placeholder="Enter your password"
+                                className={classnames(
+                                    'form-control',
+                                    { 'is-valid': password.error === false },
+                                    { 'is-invalid': password.error }
+                                )}
+                                onChange={evt =>
+                                    handleChange(validateFields.validatePassword, evt)
+                                }
+                                onBlur={evt =>
+                                    handleBlur(validateFields.validatePassword, evt)
+                                }
+                            />
+                            <div className="invalid-feedback">{password.error}</div>
+                        </div>
+
+
+
+                        <button className="btn btn-light "
+                            onClick={moveToRegister}
+                            style={{ margin: '25px' }}>
+                            Sign Up
                             </button>
 
 
 
-                            <button
-                                type="submit"
-                                className="btn btn-primary "
-                                onMouseDown={() => this.setState({ submitCalled: true })}>
-                                Login
+                        <button
+                            type="submit"
+                            className="btn btn-primary "
+                            onMouseDown={() => setSubmitCalled(true)}>
+                            Login
                             </button>
 
 
 
-                        </form>
-                    </div>
+                    </form>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
+
 }
 
 export default Login;
