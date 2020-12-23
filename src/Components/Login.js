@@ -1,12 +1,13 @@
 import React, { Component, useContext , useState} from 'react';
 import { validateFields } from './Validation';
 import classnames from 'classnames';
-import { UserContext } from './userContext';
+import { UserContext } from './UserContext';
 import './Login.css';
 
 
 
 function Login() {
+    const [user , setUser] = useContext(UserContext) ;
 
     const [email, setEmail] = useState({
         value: '',
@@ -27,8 +28,15 @@ function Login() {
 
 
 
-    function loginFunction(email, password) {
-        return (console.log(`setup Login function: ${email} ${password}`));
+    function loginFunction() {
+        var temp = {
+            name: user.name, 
+            email : email.value,
+            password: password.value , 
+            authenticated: true
+        }
+        setUser(temp); 
+        console.log(`login function  ${user.name} email:  ${email.value} ${user.email} ${user.password} ${user.authenticated}` )
     }
 
     /*
@@ -71,6 +79,7 @@ function Login() {
         console.log(field); 
         const fieldVal = evt.target.value;
         console.log(email.value);
+       
 
         if (field === 'email' && email.validateOnChange === true){
             console.log('opta')
@@ -92,7 +101,7 @@ function Login() {
             
             setEmail(temp); 
         }
-        if (field === 'password' && password.validateOnChange === true){
+        else if (field === 'password' && password.validateOnChange === true){
             console.log('optc')
             var temp = {
                 value:fieldVal ,
@@ -167,7 +176,7 @@ function Login() {
         <div className="Form col-md-8 col-lg-6">
             <div className="card">
 
-                <h4 className="card-title text-center">Sign Up</h4>
+                <h4 className="card-title text-center">Login</h4>
 
 
                 <div className="card-body">

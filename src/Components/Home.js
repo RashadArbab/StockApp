@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import './Home.css'
 import './Register'
 import TradingViewWidget, { Themes, BarStyles, HEIKIN_ASHI } from 'react-tradingview-widget';
 import Register from "./Register";
+import { UserContext } from "./UserContext";
 function Home() {
    
 
     
-
+    const [user , setUser] = useContext(UserContext) ; 
     const symbol = "NASDAQ:TSLA"
     const [theme, setTheme] = useState('light');
     const [themeString, setThemeString] = useState("Dark Mode");
@@ -49,7 +50,7 @@ function Home() {
     return (
 
         <div className="chart">
-
+            <div><h1>Welcome </h1>{user.email}</div>
             <div className="tradingView">
                 <TradingViewWidget
                     symbol={symbol}

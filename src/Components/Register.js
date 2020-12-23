@@ -3,7 +3,7 @@ import { validateFields } from './Validation';
 import classnames from 'classnames';
 import axios from 'axios';
 import './Register.css';
-import { UserContext } from './userContext';
+import { UserContext } from './UserContext';
 
 
 
@@ -11,6 +11,9 @@ import { UserContext } from './userContext';
 
 
 function Register() {
+
+    const [user , setUser] = useContext(UserContext); 
+
     const initialState = {
         name: {
             value: '',

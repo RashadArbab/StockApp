@@ -4,26 +4,32 @@ import Navbar from './Components/Navbar';
 import Login from './Components/Login';
 import Register from './Components/Register';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { userProvider } from './Components/userContext'; 
+import { UserProvider } from './Components/UserContext'; 
 import './App.css';
 
 function App() {
 
   return (
-    <userProvider>
+    <UserProvider>
       <div className="App">
 
         <Navbar />
         <BrowserRouter>
           <Switch>
-            <Route path="/home/" component={Home} exact />
-            <Route path="/login/" component={Login} exact />
-            <Route path="/register" component={Register} exact />
+            <Route path="/home/"  exact >
+              <Home/> 
+            </Route>
+            <Route path="/login/"  exact >
+              <Login/> 
+            </Route>
+            <Route path="/register"  exact >
+              <Register/>
+            </Route>
           </Switch>
 
         </BrowserRouter>
       </div>
-    </userProvider>
+    </UserProvider>
   );
 }
 
