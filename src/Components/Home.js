@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './Home.css'
+import './Register'
 import TradingViewWidget, { Themes, BarStyles, HEIKIN_ASHI } from 'react-tradingview-widget';
+import Register from "./Register";
 function Home() {
+   
+
+    
 
     const symbol = "NASDAQ:TSLA"
     const [theme, setTheme] = useState('light');
@@ -10,6 +15,9 @@ function Home() {
     const [indicators, setIndicators] = useState('false');
     const indicatorsOn = ["BB@tv-basicstudies", "MACD@tv-basicstudies", "MASimple@tv-basicstudies"]
     const [buttonColor, setButtonColor] = useState('btn btn-light');
+
+
+
 
     function changeTheme() {
         if (theme === 'light') {
@@ -39,6 +47,7 @@ function Home() {
 
 
     return (
+
         <div className="chart">
 
             <div className="tradingView">

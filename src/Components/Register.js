@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component , useContext} from 'react';
 import { validateFields } from './Validation';
 import classnames from 'classnames';
 import axios from 'axios';
 import './Register.css';
+import { UserContext } from './userContext';
 
 const initialState = {
     name: {
@@ -32,6 +33,9 @@ const initialState = {
 };
 
 class Register extends Component {
+
+    static contextType = UserContext; 
+
     constructor(props) {
         super(props);
         this.state = initialState;
@@ -40,7 +44,10 @@ class Register extends Component {
     registerFunction(name, email, password) {
         var Ticker= "AAPL"
         var Market= "NASDAQ"
-        var Notes= ["Buy", "Sell"]
+        var Notes= [
+            "Buy" , 
+            "Sell"
+        ]
 
 
         var name = name
@@ -53,6 +60,23 @@ class Register extends Component {
         }).catch((err) => {
             console.log(err);
         })
+
+        //const [user, setUser] = this.context; 
+
+        //setUser({
+        var user = {
+            name: this.state.name.value, 
+            email: this.state.email.value,
+            pass : this.state.password.value 
+        }
+        this.contextType = user; 
+           
+        //}); 
+
+        console.log(`user context ${this.contextType.name} `); 
+
+
+        
     }
 
     /*
@@ -186,8 +210,12 @@ class Register extends Component {
         window.location.href = "/login/"
     }
 
+    getUser(){
+        
+    }
 
 
+    
     render() {
         const { name, email, password, confirmPassword, allFieldsValidated } = this.state;
         return (

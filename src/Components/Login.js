@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import { validateFields } from './Validation';
 import classnames from 'classnames';
+import { UserContext } from './userContext';
 import './Login.css' ;
 
 const initialState = {
@@ -21,6 +22,9 @@ const initialState = {
 };
 
 class Login extends Component {
+
+    static contextType = UserContext; 
+
     constructor(props) {
         super(props);
         this.state = initialState;
@@ -125,6 +129,8 @@ class Login extends Component {
 
     render() {
         const {email, password, allFieldsValidated } = this.state;
+        const user = this.context
+        console.log(user) 
         return (
             <div className="Form col-md-8 col-lg-6">
                 <div className="card">
@@ -150,7 +156,7 @@ class Login extends Component {
                                     type="email"
                                     name="email"
                                     value={email.value}
-                                    placeholder="Enter your email"
+                                    placeholder={user}
                                     className={classnames(
                                         'form-control',
                                         { 'is-valid': email.error === false },
