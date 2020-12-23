@@ -4,7 +4,9 @@ I am building a web app that will firstly solve a problem that I have personally
 
 
 ## Technologies: 
-- React 
+
+- React
+- React-Context 
 - MongoDB 
 - NODEJS 
 - TradingView Charts
