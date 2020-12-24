@@ -19,7 +19,8 @@ mongo.connect('mongodb+srv://RashadArbab:Admn6392!@cluster0.3gbxy.mongodb.net/St
 
 
 router.post(`/register/newUser/:name/:email/:pass/stock/:ticker/:market/Notes/:note` , (req,res)=>{
-    console.log(`users-22: ${req.params.name}
+    console.log(`users-22: 
+    ${req.params.name}
     ${req.params.email}
     ${req.params.pass}
     ${req.params.ticker}
@@ -41,6 +42,45 @@ router.post(`/register/newUser/:name/:email/:pass/stock/:ticker/:market/Notes/:n
         }
         else {
             res.send(`user registration successful: welcome ${name}`); 
+        }
+    })
+});
+
+router.post(`/login/id/:email/:password` , (req, res)=>{
+    var email = req.params.email; 
+    var password = req.params.password  ;
+    console.log(`login request ${email} ${password}` )
+
+    const newLocal = `authenticated=true`;
+    userModel.findOne({email:email} , (err, documents)=>{
+        if(err){
+            res.send(err); 
+        }
+        else if (documents === null){
+            res.send('user does not exist'); 
+        }else if(documents.pass !== password){
+            res.send('incorrect password'); 
+        }else {
+            console.log(`authenticated user ${email} ${password}`)
+            res.send([`access granted` , documents.name]);
+        }
+    })
+}); 
+
+router.post(`/watchlist/getWatchlist/info/:email/:password` , (res,req)=>{
+  
+    var email = req.params.email; 
+    var password = req.params.password ;
+    
+    userModel.findOne({email: email} , (err, documents)=>{
+        if (err){
+            res.send(err)
+        }else if (documents === null){
+            res.send(`user not found`)
+        }else if (documents.pass !== password){
+            res.send("authentication failed");
+        }else {
+            res.send(document.stock); 
         }
     })
 });

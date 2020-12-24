@@ -2,7 +2,8 @@ import React, { Component, useContext , useState } from 'react';
 import { validateFields } from './Validation';
 import classnames from 'classnames';
 import axios from 'axios';
-import './Register.css';
+import '../css/Register.css';
+import Navbar from './LoginNavbar';
 import { UserContext } from './UserContext';
 
 
@@ -12,7 +13,7 @@ import { UserContext } from './UserContext';
 
 function Register() {
 
-    const [user , setUser] = useContext(UserContext); 
+    const {user , setUser} = useContext(UserContext); 
 
     const initialState = {
         name: {
@@ -302,6 +303,9 @@ function Register() {
 
     
     return (
+        <div>
+        
+        <Navbar/>
         <div className="Form col-md-8 col-lg-6">
             <div className="card">
 
@@ -427,6 +431,7 @@ function Register() {
                     </form>
                 </div>
             </div>
+        </div>
         </div>
     );
 }

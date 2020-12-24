@@ -1,4 +1,4 @@
-import './Navbar.css';
+import '../css/Navbar.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 
 function Navbar() {
@@ -14,16 +14,8 @@ function Navbar() {
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="/home/">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/Watchlist">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/login/">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/register">Sign Up</a>
-          </li>
-
-
 
         </ul>
       </div>
