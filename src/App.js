@@ -7,6 +7,7 @@ import { UserContext } from './Components/js/UserContext';
 import React, { useState, useMemo, useEffect } from 'react';
 import './App.css';
 import Watchlist from './Components/js/Watchlist';
+import TestPage from './Components/js/TestPage';
 
 function App() {
 
@@ -34,8 +35,8 @@ function App() {
       
         <BrowserRouter>
           <Switch>
-            <Route path='/' exact>
-              <Redirect to="/register" /> 
+          <Route path="/" exact >
+              <Redirect to="/watchlist" />
             </Route>
             <Route path="/home" exact >
               <Home />
@@ -48,6 +49,9 @@ function App() {
             </Route>
             <Route path="/watchlist" exact> 
               <Watchlist/> 
+            </Route>
+            <Route path="/test-page" exact> 
+              <TestPage/> 
             </Route>
           </Switch>
 

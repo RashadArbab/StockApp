@@ -51,7 +51,7 @@ router.post(`/login/id/:email/:password` , (req, res)=>{
     var password = req.params.password  ;
     console.log(`login request ${email} ${password}` )
 
-    const newLocal = `authenticated=true`;
+    
     userModel.findOne({email:email} , (err, documents)=>{
         if(err){
             res.send(err); 
@@ -67,23 +67,28 @@ router.post(`/login/id/:email/:password` , (req, res)=>{
     })
 }); 
 
-router.post(`/watchlist/getWatchlist/info/:email/:password` , (res,req)=>{
-  
+router.post(`/watchlist/id/:email/:password` , (req, res)=>{
     var email = req.params.email; 
-    var password = req.params.password ;
+    var password = req.params.password  ;
+    console.log(`watchlist request ${email} ${password}` )
+
     
-    userModel.findOne({email: email} , (err, documents)=>{
-        if (err){
-            res.send(err)
-        }else if (documents === null){
-            res.send(`user not found`)
-        }else if (documents.pass !== password){
-            res.send("authentication failed");
+    userModel.findOne({email:email} , (err, documents)=>{
+        if(err){
+            res.send(err); 
+        }
+        else if (documents === null){
+            res.send([{Ticker: 'aapl'} , {Ticker: 'pltr'} , {Ticker:'tsla'}]); 
+        }else if(documents.pass !== password){
+            res.send('incorrect password'); 
         }else {
-            res.send(document.stock); 
+            console.log(`authenticated user ${email} ${password}`)
+            res.send(documents.stock);
         }
     })
-});
+}); 
+
+
    
 
 

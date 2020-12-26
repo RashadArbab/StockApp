@@ -28,7 +28,7 @@ function Login() {
         validateOnChange: false,
         error: ''
     });
-
+ 
     const [submitCalled, setSubmitCalled] = useState(false);
     const [allFieldsValidated, setAllFieldsValidated] = useState(false);
 
@@ -47,14 +47,15 @@ function Login() {
                     authenticated: true
                 });
                 console.log(`access granted ${res.data[1]}`);
-                window.location.href = '/home' ;
+                sessionStorage.setItem('sessionName', res.data[1]);
+                
             }
         }).catch((err) => {
             console.log(err)
         });
 
 
-        sessionStorage.setItem('sessionName', user.name);
+        
         console.log(`Login: sessionStorage: ${sessionStorage.getItem("sessionName")}`)
         sessionStorage.setItem('sessionEmail', user.email);
         console.log(`Login: sessionStorage: ${sessionStorage.getItem("sessionEmail")}`)
@@ -270,7 +271,12 @@ function Login() {
                                 <div className="invalid-feedback">{password.error}</div>
                             </div>
 
-
+                            <button
+                                type="submit"
+                                className="btn btn-primary "
+                                onMouseDown={() => setSubmitCalled(true)}>
+                                Login
+                            </button>
 
                             <button className="btn btn-light "
                                 onClick={moveToRegister}
@@ -280,12 +286,7 @@ function Login() {
 
 
 
-                            <button
-                                type="submit"
-                                className="btn btn-primary "
-                                onMouseDown={() => setSubmitCalled(true)}>
-                                Login
-                            </button>
+                           
 
 
 
