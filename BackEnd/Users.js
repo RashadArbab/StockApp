@@ -5,7 +5,7 @@ const mongo = require('mongoose');
 
 
 var userModel = mongo.model('users' , {name: String , email: String, pass: String , 
-    stock : [{Ticker: String , Market: String , Notes : [String]}]}) ; 
+    stock : [{Ticker: String, Market: String , Notes : [String]}]}) ; 
 
 mongo.connect('mongodb+srv://RashadArbab:Admn6392!@cluster0.3gbxy.mongodb.net/StockApp?retryWrites=true&w=majority' , 
 {useNewUrlParser: true , useUnifiedTopology :true , useFindAndModify : false} ,(err)=>{

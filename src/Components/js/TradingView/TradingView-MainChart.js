@@ -41,8 +41,9 @@ function Chart(props) {
 
 
     return (
-        <div>
-            
+        <section id="MainChart">
+            <div>
+                <br/>
                 <div className="tradingView">
                     <TradingViewWidget
                         symbol={props.ticker}
@@ -51,7 +52,7 @@ function Chart(props) {
                         autosize
                         BarStyles={HEIKIN_ASHI}
                         studies={indicators}
-                        
+
                     />
 
                 </div>
@@ -64,7 +65,8 @@ function Chart(props) {
                     </div>
                 </div>
             </div>
-            
-        );
+        </section>
 
-    } export default Chart;
+    );
+
+} export default Chart;

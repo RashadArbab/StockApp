@@ -10,31 +10,32 @@ function Profile(props) {
         script.async = true;
         script.innerHTML = JSON.stringify({
             "symbol": symbol,
-            "height": "400",
-            "width": "600", 
+            "height": "600",
+            "width": "600",
             "locale": "en",
             "dateRange": "12M",
             "colorTheme": "dark",
             "trendLineColor": "#37a6ef",
             "underLineColor": "#E3F2FD",
-            "isTransparent": true,
+            "isTransparent": false,
             "autosize": true,
             "largeChartUrl": ""
         })
-        document.getElementById("myContainer").appendChild(script);
+        document.getElementById("profileContainer").appendChild(script);
     }, []);
 
 
 
     return (
+        <section id="Profile">
+            <div id="profileContainer" >
+                <div className="tradingview-widget-container">
+                    <div className="tradingview-widget-container__widget">
 
-        <div id="myContainer" >
-            <div className="tradingview-widget-container">
-                <div className="tradingview-widget-container__widget">
-
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
     );
 

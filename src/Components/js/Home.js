@@ -7,6 +7,7 @@ import { UserContext } from "./UserContext";
 import MainChart from "./TradingView/TradingView-MainChart"
 import Financials from "./TradingView/TradingView-Financials";
 import Profile from "./TradingView/TradingView-Profile";
+import bootstrap, { Card, Body } from 'bootstrap';
 function Home(props) {
 
 
@@ -38,25 +39,64 @@ function Home(props) {
     return (
         <div>
             <Navbar />
-            <div class="MainChart" >
-                <MainChart name={"tsla"} />
 
 
+            <nav className="navbar navbar-expand-sm sticky-top navbar-dark bg-dark">
+
+                <button className="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarMenu">
+                    <ul className="navbar-nav">
+                        <li className="nav-item">
+                            <a href="#MainChart" className="nav-link">Chart</a>
+                        </li>
+                        <li className="nav-item">
+                            <a href="#Profile" className="nav-link">Profile</a>
+                        </li>
+                        <li className="nav-item">
+                            <a href="#Financials" className="nav-link">Financials</a>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </nav>
+
+
+
+            <MainChart name={"CRM"} />
+
+
+            <div className="first">
+                <div className="card" style={{ alignItems: "center" }}>
+                    <div className="card-body">
+
+                        <Financials name={"CRM"} />
+
+                    </div>
+                </div>
             </div>
+            <div className ="second">
+                <div className="card card-dark bg-dark">
+                    <div className="card-body">
 
-
-            <div className="row">
-                <div className="profile" style={{ width: "100%", height: "100%" }}>
-                    <Profile name={"tsla"} />
-
-
-                    <Financials name={"tsla"} style={{ width: "100%", height: "100%" }} />
+                        <Profile name={"CRM"} />
+                        Literally what the fuck? 
+                    </div>
                 </div>
             </div>
 
 
 
+
+
+
         </div>
+
+
+
+
 
 
 
