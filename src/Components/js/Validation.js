@@ -17,6 +17,20 @@ class ValidateFields {
       return false; 
     }
   }
+
+  validateTicker(ticker){
+    if (validator.isEmpty(ticker)){
+      return "Ticker is required"
+    }
+    else {
+      return false; 
+    }
+  }
+
+  validateMarket(market){
+    const markets = ['NYSE', 'NASDAQ', 'TSX']
+  }
+
   validateEmail(email) {
     if (validator.isEmpty(email)) {
       return 'Email is required';

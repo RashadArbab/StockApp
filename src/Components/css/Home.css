@@ -1,3 +1,5 @@
+
+
 .tradingView{
     display: block;
     margin-top: 10vh; 
@@ -8,17 +10,27 @@
     border-radius: 5px;
 }
 
-.chartButtons{
-    display: inline-flex;  
+
+
+
+
+.contain{
+    display: flex;
+    justify-content: center;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+.contain2{
+    display: flex;
+    justify-content: center;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
-.changeButton{
-    padding:10px;
-}
-
-
-.second{
-    color:white; 
+.StickyNav{
+    position:sticky !important ;
+    top:0px;
+    z-index: 999;
 }
 
 

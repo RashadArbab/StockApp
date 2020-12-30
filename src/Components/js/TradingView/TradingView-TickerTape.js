@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function TestPage(props) {
+
+function TickerTape() {
 
 
     const [user, setUser] = useState({
@@ -13,7 +14,7 @@ function TestPage(props) {
 
     useEffect(() => {
         console.log(user.name);
-        const symbol = props.name;
+       
        
 
         if (!sessionStorage.getItem(`sessionWatchlist`) === null) {
@@ -66,7 +67,7 @@ function TestPage(props) {
 
                     var array = new Array(watchlist.length);
                     for (let index = 0; index < watchlist.length; index++) {
-                        var string = `${watchlist[index].Market.toUpperCase()}:${watchlist[index].Ticker.toUpperCase()}`
+                        var string = `${watchlist[index].Ticker.toUpperCase()}`
                         array[index] = {
 
                             "proName": string,
@@ -119,4 +120,4 @@ function TestPage(props) {
         </div>
     );
 
-} export default TestPage;
+} export default TickerTape;

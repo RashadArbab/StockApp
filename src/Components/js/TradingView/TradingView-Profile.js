@@ -1,25 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import bootstrap from 'bootstrap';
+import Cookies from 'js-cookie'
 function Profile(props) {
     const script = document.createElement('script');
-
+    const width = visualViewport.width.valueOf() * 0.75; 
+    const theme = props.theme; 
+    console.log(theme);
     useEffect(() => {
         const symbol = props.name;
+       
         console.log(symbol);
         script.src = "https://s3.tradingview.com/external-embedding/embed-widget-symbol-profile.js"
         script.async = true;
         script.innerHTML = JSON.stringify({
-            "symbol": symbol,
-            "height": "600",
-            "width": "600",
+            "symbol": Cookies.get('currentStock'),
+            "height": "300",
+            "width": `${width}`,
             "locale": "en",
             "dateRange": "12M",
-            "colorTheme": "dark",
+            "colorTheme": theme,
             "trendLineColor": "#37a6ef",
             "underLineColor": "#E3F2FD",
             "isTransparent": false,
             "autosize": true,
-            "largeChartUrl": ""
+            "largeChartUrl": "",
+            "displayMode": "compact"
+
         })
         document.getElementById("profileContainer").appendChild(script);
     }, []);

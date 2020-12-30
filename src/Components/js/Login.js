@@ -6,11 +6,17 @@ import '../css/Login.css'
 import axios from 'axios';
 import { json } from 'body-parser';
 import Navbar from './LoginNavbar';
+import Cookies from 'js-cookie';
+
 
 
 
 function Login() {
     const { user, setUser } = useContext(UserContext);
+    const [cookies, setCookies] = useState({})
+
+    
+
 
 
 
@@ -28,7 +34,7 @@ function Login() {
         validateOnChange: false,
         error: ''
     });
- 
+
     const [submitCalled, setSubmitCalled] = useState(false);
     const [allFieldsValidated, setAllFieldsValidated] = useState(false);
 
@@ -38,6 +44,7 @@ function Login() {
 
 
         console.log(`password.value before sending api request ${password.value}`)
+        console.log(`email.value before sending api request ${email.value}`)
         axios.post(`/api/users/login/id/${email.value}/${password.value}`).then(res => {
             if (res.data[0] === `access granted`) {
                 setUser({
@@ -47,21 +54,24 @@ function Login() {
                     authenticated: true
                 });
                 console.log(`access granted ${res.data[1]}`);
+                Cookies.set('name' , `${res.data[1]}` , { sameSite: 'strict' , expires : 1});
+                Cookies.set('email' , `${email.value}` , { sameSite: 'strict' , expires : 1});
+                Cookies.set('pass', `${password.value}` , {sameSite: 'strict' , expires: 1}) ; 
                 sessionStorage.setItem('sessionName', res.data[1]);
-                
+
             }
         }).catch((err) => {
             console.log(err)
         });
 
 
-        
-        console.log(`Login: sessionStorage: ${sessionStorage.getItem("sessionName")}`)
+
+        console.log(`Login: user.email: ${user.email}`)
         sessionStorage.setItem('sessionEmail', user.email);
         console.log(`Login: sessionStorage: ${sessionStorage.getItem("sessionEmail")}`)
         sessionStorage.setItem('sessionAuthenticated', user.authenticated);
 
-        
+
 
 
 
@@ -207,12 +217,12 @@ function Login() {
 
 
     return (
-        <div> 
-            <Navbar/>
+        <div>
+            <Navbar />
             <div className="Form col-md-8 col-lg-6">
-                <div className="card">
+                <div className="card " style={{ borderRadius: "15px" }}>
 
-                    <h4 className="card-title text-center">{user.email}</h4>
+                    <h4 className="card-title text-center">{Cookies.get('name')}</h4>
 
 
                     <div className="card-body">
@@ -286,7 +296,7 @@ function Login() {
 
 
 
-                           
+
 
 
 
