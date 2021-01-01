@@ -120,19 +120,30 @@ router.post(`/watchlist/add/:ticker/:email/:pass`, (req, res) => {
             res.send("no user found");
         } else {
             if (bcrypt.compareSync(password, documents.pass)) {
-                console.log('passwords match')
-                userModel.updateOne({ email: email },
-                    {
-                        push: {
-                            stock: {
-                                Ticker: ticker,
-                                Market: "",
-                                Notes: [''],
-                            }
+
+                var tempStock = {
+                    Notes: [""],
+                    Ticker: ticker.toUpperCase(),
+                    Market: "NASDAQ"
+                }
+                console.log("Attempting to add stock");
+                if (documents.stock.some(stock => stock.Ticker === ticker)) {
+                    console.log('repeat');
+                    res.send('ticker already exists');
+                } else {
+                    userModel.findOneAndUpdate({ email: email }, { $push: { stock: tempStock } }, (err) => {
+                        if (err) {
+                            console.log(err);
+                            res.send(err)
+                        } else {
+                            res.send("Successfully added stock")
                         }
-                    });
+                    })
+                    console.log(`end of adding`)
+                }
+
             } else {
-                console.log('password incorrect') 
+                console.log('password incorrect')
                 res.send("passowrd incorrect");
             }
 

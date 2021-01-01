@@ -15,10 +15,10 @@ function Watchlist() {
     var data = (['test 1', 'test 2']);
 
 
-    const [submitCalled, setSubmitCalled] = useState(false);
+
 
     const [ticker, setTicker] = useState('');
-
+    const [run, setRun] = useState(0);
 
     const [user, setUser] = useState({
         name: sessionStorage.getItem('sessionName'),
@@ -28,63 +28,79 @@ function Watchlist() {
     });
 
     const [watchlist, setWatchlist] = useState([]);
-    const [dataList, setDataList] = useState([]);
-    const [display, setDisplay] = useState(['placeholder']);
+
 
     useEffect(() => {
-        console.log(`axios.post ${sessionStorage.getItem('sessionEmail')} `);
-        axios.post(`/api/users/watchlist/id/${user.email}/${user.password}`).then((res) => {
+        getWatchlist()
+    }, [])
+
+
+    function getWatchlist() {
+        console.log(`get watchlist running`);
+
+        axios.post(`/api/users/watchlist/id/${Cookies.get("email")}/${Cookies.get("pass")}`).then((res) => {
             if (res) {
-                console.log(`user.name ${user.name}`)
-                console.log(`sessionStorage ${sessionStorage.getItem('sessionName')}`)
-                setWatchlist(res.data);
-
-
-
-                console.log(` This is the res.data: ${JSON.stringify(res.data)}`);
+                setWatchlist(res.data)
+                console.log(`user.name ${Cookies.get("name")}`)
+                console.log(` This is the res.data: ${JSON.stringify(res.data)}`)
             }
         }).catch((err) => {
             console.log(err);
         })
-    }, [])
 
-  
 
-    const [arr, setArr] = useState([]);
+        console.log(`run added ${run}`);
 
-    const tickerList = watchlist.map((element) => {
 
-        return <a class="list-group-item" onClick={() => {
-            console.log("selectStock: ");
-            Cookies.set('currentStock', `${element.Ticker.toUpperCase()}`, { sameSite: 'strict', expires: 1 })
-            console.log("current stock: " + JSON.stringify(Cookies.get("currentStock")));
-            window.location.href = '/home'
+    }
+    const [tickerList, setTickerList] = useState();
+    useEffect(() => {
+        setTickerList(watchlist.map((element) => {
+            console.log("setTickerList is running")
+            return <a class="list-group-item" key={element._id} onClick={() => {
+                console.log("selectStock: ");
+                Cookies.set('currentStock', `${element.Ticker.toUpperCase()}`, { sameSite: 'strict', expires: 1 })
+                console.log("current stock: " + JSON.stringify(Cookies.get("currentStock")));
+                window.location.href = '/home'
 
-        }}>
-            <div>
-                {element.Ticker.toUpperCase()}
-            </div>
+            }}>
+                <div>
+                    {element.Ticker.toUpperCase()}
+                </div>
 
-        </a>
-    })
+            </a>
+        }))
+    }, [watchlist])
+
+
+
+    const [feedback, setFeedback] = useState("");
 
     function addToList() {
-        console.log(ticker); 
+        console.log(ticker);
         axios.post(`/api/users/watchlist/add/${ticker}/${Cookies.get("email")}/${Cookies.get("pass")}`).then((res) => {
             console.log(res)
-        }).catch((err) => {
+            setFeedback(res.data)
+
+        }).then(getWatchlist).catch((err) => {
             console.log(err)
-        });
+        })
+
+
+        setRun(run + 1);
+
 
     }
 
-    function handleSubmit(props){
-        props.preventDefault(); 
+    function handleSubmit(props) {
+        props.preventDefault();
         console.log(`${ticker} ${Cookies.get("email")} ${Cookies.get("pass")}`)
 
-        addToList(); 
+        addToList();
     }
-    
+
+
+
 
 
 
@@ -111,15 +127,17 @@ function Watchlist() {
 
             <div className="card">
                 <h3 className="card-title text-center">Add To Watchlist</h3>
-                <div className="form" onSubmit={evt=> handleSubmit(evt)}>
+                <div className="form" onSubmit={evt => handleSubmit(evt)}>
                     <div className="form-group">
                         <div className="form-group">
                             <input
                                 type="text"
                                 name="ticker"
                                 value={ticker.value}
-                                placeholder={"Enter ticker here"}
-                                onChange={(evt)=>{setTicker(evt.target.value)}} />
+                                placeholder={"Enter Ticker Here"}
+                                className="form-control"
+                                onChange={(evt) => { setTicker(evt.target.value) }} />
+                            <div >{feedback}</div>
                         </div>
                         <button className="btn btn-light "
                             type="submit"
