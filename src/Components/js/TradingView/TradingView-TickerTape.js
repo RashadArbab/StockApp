@@ -18,17 +18,17 @@ function TickerTape() {
 
 
 
-        if (Cookies.get(`watchlist`) === null) {
+        if (!Cookies.get('tickerList')) {
             const script = document.createElement('script');
 
             script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js'
             script.async = true;
-            console.log(`if{}`)
-            var sessionList = sessionStorage.getItem(`sessionWatchList`);
+            
+            /*
 
             var array = new Array(sessionList.length);
             for (let index = 0; index < sessionList.length; index++) {
-                var string = `NASDAQ:${sessionList[index].Ticker.toUpperCase()}`
+                var string = `NASDAQ:${Cookies.get('watchlist').[index].Ticker.toUpperCase()}`
                 array[index] = {
 
                     "proName": string,
@@ -36,7 +36,7 @@ function TickerTape() {
                 }
 
             }
-            console.log(`this is session storage ` + sessionStorage.getItem(`sessionWachtlist`));
+           */
 
             script.innerHTML = JSON.stringify({
 
@@ -60,14 +60,29 @@ function TickerTape() {
             script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js'
             script.async = true;
 
-            const watchlist = Cookies.get("watchlist");
-            var array = new Array(watchlist.length);
-            for (let index = 0; index < watchlist.length; index++) {
-                var string = `${watchlist[index].Ticker.toUpperCase()}`
-                array[index] = {
+            const watchlist = Cookies.get("tickerList")
+            console.log (`stringified: ${watchlist}`) 
+            
 
+            console.log(`parsed ${JSON.parse(watchlist)}`);
+
+            console.log(Array.from(watchlist))
+           
+            var newWatchlist = JSON.parse(watchlist);
+           
+            console.log(`this is the formed array ${Array.from(newWatchlist)}`); 
+
+            newWatchlist = Array.from(newWatchlist); 
+            
+            
+            var array = new Array(newWatchlist.length);
+            console.log(newWatchlist.length) ; 
+        
+            for (let index = 0; index < newWatchlist.length; index++) {
+                var string = `${newWatchlist[index].toUpperCase()}`
+                array[index] = {
                     "proName": string,
-                    "title": watchlist[index].Ticker.toUpperCase()
+                    "title": newWatchlist[index].toUpperCase()
                 }
 
             }

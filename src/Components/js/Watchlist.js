@@ -43,6 +43,8 @@ function Watchlist() {
                 setWatchlist(res.data)
                 console.log(`user.name ${Cookies.get("name")}`)
                 console.log(` This is the res.data: ${JSON.stringify(res.data)}`)
+                console.log("setting watchlist to data")
+                Cookies.set("watchlist", res.data);
             }
         }).catch((err) => {
             console.log(err);
@@ -54,22 +56,32 @@ function Watchlist() {
 
     }
     const [tickerList, setTickerList] = useState();
+
     useEffect(() => {
-        setTickerList(watchlist.map((element) => {
+        var tickerArray = [];
+        setTickerList(watchlist.map((element, num) => {
             console.log("setTickerList is running")
-            return <a class="list-group-item" key={element._id} onClick={() => {
-                console.log("selectStock: ");
-                Cookies.set('currentStock', `${element.Ticker.toUpperCase()}`, { sameSite: 'strict', expires: 1 })
-                console.log("current stock: " + JSON.stringify(Cookies.get("currentStock")));
-                window.location.href = '/home'
+            tickerArray[num] = element.Ticker;
+            return (
 
-            }}>
-                <div>
-                    {element.Ticker.toUpperCase()}
-                </div>
+                <a class="list-group-item" key={element._id} onClick={() => {
+                    console.log("selectStock: ");
+                    Cookies.set('currentStock', `${element.Ticker.toUpperCase()}`, { sameSite: 'strict', expires: 1 })
+                    console.log("current stock: " + JSON.stringify(Cookies.get("currentStock")));
+                    window.location.href = '/home'
 
-            </a>
+                }}>
+
+                    <div>
+                        {element.Ticker.toUpperCase()}
+                    </div>
+
+                </a>
+            )
         }))
+
+        Cookies.set('tickerList', JSON.stringify(tickerArray));
+
     }, [watchlist])
 
 
