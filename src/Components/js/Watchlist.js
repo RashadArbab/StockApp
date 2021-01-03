@@ -142,13 +142,16 @@ function Watchlist() {
                 <div className="form" onSubmit={evt => handleSubmit(evt)}>
                     <div className="form-group">
                         <div className="form-group">
-                            <input
-                                type="text"
-                                name="ticker"
-                                value={ticker.value}
-                                placeholder={"Enter Ticker Here"}
-                                className="form-control"
-                                onChange={(evt) => { setTicker(evt.target.value) }} />
+                            <div className="input-text">
+                                <input
+                                    type="text"
+                                    name="ticker"
+                                    value={ticker.value}
+                                    placeholder={"Enter Ticker Here"}
+                                    className="form-control"
+                                    onChange={(evt) => { setTicker(evt.target.value) }}
+                                />
+                            </div>
                             <div >{feedback}</div>
                         </div>
                         <button className="btn btn-light "

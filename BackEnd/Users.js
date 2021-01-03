@@ -133,10 +133,9 @@ router.post(`/watchlist/add/:ticker/:email/:pass`, (req, res) => {
                 } else {
                     userModel.findOneAndUpdate({ email: email }, { $push: { stock: tempStock } }, (err) => {
                         if (err) {
-                            console.log(err);
                             res.send(err)
                         } else {
-                            res.send("Successfully added stock")
+                            res.send("Successfully added stock");
                         }
                     })
                     console.log(`end of adding`)
@@ -150,6 +149,65 @@ router.post(`/watchlist/add/:ticker/:email/:pass`, (req, res) => {
         }
     })
 })
+
+router.post(`/notes/add/:email/:pass/:stock/:note`, (req, res) => {
+    var email = req.params.email
+    var pass = req.params.pass
+    var note = req.params.note
+    var tempStock = req.params.stock
+
+
+    userModel.findOne({ email: email, 'stock.Ticker': tempStock }, (err, documents) => {
+        if (err) {
+            res.send(err);
+        }
+        else if (documents === null) {
+            res.send('user not found');
+        } else if (bcrypt.compareSync(pass, documents.pass)) {
+            userModel.findOneAndUpdate({ email: email, "stock.Ticker": tempStock }, { $push: { "stock.$.Notes": note } }, (documents, err) => {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.send(documents.stock);
+                }
+            })
+        }
+    })
+})
+
+router.post(`/notes/remove/:email/:stock/:note` , (req , res)=>{
+    var email = req.params.email 
+    var pass = req.params.pass 
+    var note = req.params.note 
+    var tempStock = req.params.stock 
+
+
+    userModel.findOneAndUpdate({email : email , 'stock.Ticker': tempStock} , {$pull : {"stock.$.Notes" : note}} , (documents , err)=>{
+        if (err){
+            res.send(err);
+        }else {
+            res.send('it worked'); 
+        }
+    })
+})
+
+router.post(`/notes/get/:email/:pass/:stock` , (req, res)=>{
+    var email = req.params.email 
+    var pass = req.params.pass 
+    var tempStock = req.params.stock 
+    console.log("get working")
+    userModel.findOne({email: email , 'stock.Ticker': tempStock} , (documents , err)=>{
+        if (err){
+            res.send(err)
+        }else {
+            console.log('hello')
+            res.send(documents.email)
+           
+        }
+    })
+})
+
+
 
 
 
