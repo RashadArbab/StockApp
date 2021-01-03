@@ -21,7 +21,7 @@ function Chart(props) {
                     <TradingViewWidget
                         symbol={props.name}
                         
-                        theme={props.theme}
+                        theme='dark'
                         locale="en"
                         autosize
                         BarStyles={HEIKIN_ASHI}

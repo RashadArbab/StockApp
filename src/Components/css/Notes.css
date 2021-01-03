@@ -2,34 +2,66 @@ body{
     color:white !important; 
 }
 
-.form-contorl{
-    color: white !important; 
-}
+
 
 .input-text { 
     color:'white' !important; 
 }
-
-.btn{
-    padding:10px; 
+.card {
+    background-color: #333333 !important;
+    justify-content: center;
+    width: 100vw; 
+    margin:10px !important ;
 }
 
-.Button {
-    padding: 10px; 
+.input-group-text {
+    background-color : #eeeeee !important; 
 }
 
-.list-group-item {
-    background-color:darkgray !important;
-    color: white !important ;
+.form-control { 
+    background-color: #eeeeee !important; 
 }
+
+.btn-light{
+    padding-left: 0px !important;
+}
+.container{
+    padding:10px;
+}
+
+
+
+
+
 .list-group-flush {
-    padding:20px; 
+    
     border-radius: 5px !important ; 
+    
 }
 
-.btn{
-    padding: 20px;
+.list-group-item-dark {
+    background-color: #444444 !important ;
+    color: #eeeeee !important;
+
 }
+
+.btn-dark{
+    padding: 20px;
+  
+    border-radius: 0px !important;
+    background-color: #202020d5 !important;
+   
+}
+.notes-list{
+    border-radius: 10px;
+}
+
+/*
+border-bottom-right-radius: 5px !important;
+    border-top-right-radius: 5px !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+*/
 
 .notesListItem{
     display: flex; 

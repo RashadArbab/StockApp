@@ -1,13 +1,9 @@
 
 import axios from 'axios';
 import Navbar from './LoginNavbar';
-import { UserContext } from './UserContext';
+
 import React, { useContext, useState, useEffect, map } from 'react'
-import TradingViewWidget from 'react-tradingview-widget';
-import { createChart } from 'lightweight-charts'
-import TestPage from './TestPage';
-import classnames from 'classnames';
-import { validateFields } from './Validation';
+
 import Cookies from 'js-cookie';
 import '../css/Watchlist.css';
 function Watchlist() {

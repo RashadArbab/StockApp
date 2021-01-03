@@ -122,7 +122,7 @@ router.post(`/watchlist/add/:ticker/:email/:pass`, (req, res) => {
             if (bcrypt.compareSync(password, documents.pass)) {
 
                 var tempStock = {
-                    Notes: [""],
+                    Notes: [],
                     Ticker: ticker.toUpperCase(),
                     Market: "NASDAQ"
                 }
@@ -175,21 +175,7 @@ router.post(`/notes/add/:email/:pass/:stock/:note`, (req, res) => {
     })
 })
 
-router.post(`/notes/remove/:email/:stock/:note` , (req , res)=>{
-    var email = req.params.email 
-    var pass = req.params.pass 
-    var note = req.params.note 
-    var tempStock = req.params.stock 
 
-
-    userModel.findOneAndUpdate({email : email , 'stock.Ticker': tempStock} , {$pull : {"stock.$.Notes" : note}} , (documents , err)=>{
-        if (err){
-            res.send(err);
-        }else {
-            res.send('it worked'); 
-        }
-    })
-})
 
 router.post(`/notes/get/:email/:pass/:stock` , (req, res)=>{
     var email = req.params.email 
@@ -200,9 +186,25 @@ router.post(`/notes/get/:email/:pass/:stock` , (req, res)=>{
         if (err){
             res.send(err)
         }else {
-            console.log('hello')
             res.send(documents.email)
            
+        }
+    })
+})
+
+router.post(`/notes/remove/:email/:pass/:stock/:note` , (req , res)=>{
+    var email = req.params.email 
+    var pass = req.params.pass 
+    var note = req.params.note 
+    var tempStock = req.params.stock  
+
+    console.log(`remove api`)
+
+    userModel.findOneAndUpdate({email : email , 'stock.Ticker': tempStock} , {$pull : {"stock.$.Notes" : note}} , (documents , err)=>{
+        if (err){
+            res.send(err);
+        }else {
+            res.send('it worked'); 
         }
     })
 })

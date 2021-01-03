@@ -4,21 +4,21 @@ import Cookies from 'js-cookie'
 function Profile(props) {
     const script = document.createElement('script');
     const width = visualViewport.width.valueOf() * 0.75; 
-    const theme = props.theme; 
-    console.log(theme);
+
+    
     useEffect(() => {
-        const symbol = props.name;
+        const symbol = Cookies.get("currentStock");
        
         console.log(symbol);
         script.src = "https://s3.tradingview.com/external-embedding/embed-widget-symbol-profile.js"
         script.async = true;
         script.innerHTML = JSON.stringify({
-            "symbol": Cookies.get('currentStock'),
+            "symbol": `${Cookies.get('currentStock')}`,
             "height": "300",
             "width": `${width}`,
             "locale": "en",
             "dateRange": "12M",
-            "colorTheme": theme,
+            "colorTheme": "dark",
             "trendLineColor": "#37a6ef",
             "underLineColor": "#E3F2FD",
             "isTransparent": false,
