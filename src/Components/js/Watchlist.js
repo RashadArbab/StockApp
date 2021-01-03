@@ -59,20 +59,20 @@ function Watchlist() {
             console.log("setTickerList is running")
             tickerArray[num] = element.Ticker;
             return (
+                <div className="row justify-content-center">
+                    <a className="list-group-item col-sm-8" key={element._id} onClick={() => {
+                        console.log("selectStock: ");
+                        Cookies.set('currentStock', `${element.Ticker.toUpperCase()}`, { sameSite: 'strict', expires: 1 })
+                        console.log("current stock: " + JSON.stringify(Cookies.get("currentStock")));
+                        window.location.href = '/home'
 
-                <a class="list-group-item" key={element._id} onClick={() => {
-                    console.log("selectStock: ");
-                    Cookies.set('currentStock', `${element.Ticker.toUpperCase()}`, { sameSite: 'strict', expires: 1 })
-                    console.log("current stock: " + JSON.stringify(Cookies.get("currentStock")));
-                    window.location.href = '/home'
-
-                }}>
-
-                    <div>
-                        {element.Ticker.toUpperCase()}
-                    </div>
-
-                </a>
+                    }}>
+                        <div>
+                            {element.Ticker.toUpperCase()}
+                        </div>
+                    </a>
+                    <button className="btn btn-dark col-sm-2" onClick={() => { removeFunction(element) }}>Remove</button>
+                </div>
             )
         }))
 
@@ -80,7 +80,15 @@ function Watchlist() {
 
     }, [watchlist])
 
+    function removeFunction(element) {
+        var removeStock = element 
 
+        axios.post(`/api/users/watchlist/remove/${Cookies.get("email")}/${Cookies.get("pass")}/${removeStock}`).then((res)=>{
+            console.log(res.data); 
+        }).catch((err)=>{
+            console.log(err); 
+        })
+    }
 
     const [feedback, setFeedback] = useState("");
 
@@ -120,46 +128,48 @@ function Watchlist() {
         <div>
             <Navbar />
 
-            <div className="row" style={{ justifyItems: 'center' }}>
-                <div class="card col-6" >
+
+
+            <div className="row">
+                <div className="card col-sm-6">
                     <h3 class="card-title">Watchlist</h3>
-                    <div class="card-body">
-                        <ul className="col-7-md list-group list-group-flush">
-                            {tickerList}
-                        </ul>
-
-                    </div>
-                </div>
-            </div>
-
-
-            <div className="card">
-                <h3 className="card-title text-center">Add To Watchlist</h3>
-                <div className="form" onSubmit={evt => handleSubmit(evt)}>
-                    <div className="form-group">
+                    <div className="form" onSubmit={evt => handleSubmit(evt)}>
                         <div className="form-group">
-                            <div className="input-text">
-                                <input
-                                    type="text"
-                                    name="ticker"
-                                    value={ticker.value}
-                                    placeholder={"Enter Ticker Here"}
-                                    className="form-control"
-                                    onChange={(evt) => { setTicker(evt.target.value) }}
-                                />
+                            <div className="form-group">
+                                <div className="input-text">
+                                    <input
+                                        type="text"
+                                        name="ticker"
+                                        value={ticker.value}
+                                        placeholder={"Enter Ticker Here"}
+                                        className="form-control"
+                                        onChange={(evt) => { setTicker(evt.target.value) }}
+                                    />
+                                </div>
+                                <div className="row" >
+                                    {feedback}</div>
                             </div>
-                            <div >{feedback}</div>
-                        </div>
-                        <button className="btn btn-light "
-                            type="submit"
-                            onClick={addToList}
-                            style={{ margin: '25px' }}>
-                            Add Stock
+                            <button className="btn btn-light col-sm-2"
+                                type="submit"
+                                onClick={addToList}
+                                style={{ margin: '25px' }}>Add Stock
                             </button>
+
+
+
+
+
+
+                            <ul className="col-7-md list-group list-group-flush">
+                                {tickerList}
+                            </ul>
+
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
+
 
 
     )

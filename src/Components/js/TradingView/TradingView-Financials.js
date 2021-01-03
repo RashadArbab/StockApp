@@ -2,19 +2,16 @@ import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 function Financials(props) {
     const script = document.createElement('script');
-    const theme = props.theme; 
+    const width = visualViewport.width.valueOf() * 0.75;
    
     useEffect(() => {
         const symbol = Cookies.get("currentStock");
-        console.log("Financials name " + props.name)
-
-        const width = visualViewport.width.valueOf() * 0.75;
-        console.log(symbol);
+ 
         script.src = "https://s3.tradingview.com/external-embedding/embed-widget-financials.js"
         script.async = true;
 
         script.innerHTML = JSON.stringify({
-            "symbol": `${symbol}`,
+            "symbol": `${Cookies.get('currentStock')}`,
             "height": "500",
             "width": `${width}`,
             "locale": "en",
@@ -29,7 +26,7 @@ function Financials(props) {
 
         })
         document.getElementById("financialContainer").appendChild(script);
-    }, [theme]);
+    }, []);
 
 
 

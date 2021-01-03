@@ -7,8 +7,7 @@ function Profile(props) {
 
     
     useEffect(() => {
-        const symbol = Cookies.get("currentStock");
-       
+        const symbol = Cookies.get("currentStock"); 
         console.log(symbol);
         script.src = "https://s3.tradingview.com/external-embedding/embed-widget-symbol-profile.js"
         script.async = true;
