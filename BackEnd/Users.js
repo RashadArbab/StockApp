@@ -200,7 +200,7 @@ router.post(`/notes/remove/:email/:pass/:stock/:note`, (req, res) => {
 
     console.log(`remove api`)
 
-    userModel.findOneAndUpdate({ email: email, 'stock.Ticker': tempStock }, { $pull: { "stock.$.Notes": note } }, (documents, err) => {
+    userModel.findOneAndUpdate({ email: email }, { $pull: { "stock.$.Notes": note } }, (documents, err) => {
         if (err) {
             res.send(err);
         } else {
@@ -215,8 +215,9 @@ router.post(`/watchlist/remove/:email/:pass/:stock`, (req, res) => {
     var pass = req.params.pass
     var tempStock = req.params.stock
 
+    
 
-    userModel.findOneAndUpdate({ email: email }, { $pull: { "stock": { ticker: tempStock } } }, (documents, err) => {
+    userModel.findOneAndUpdate({ email: email }, { $pull : {stock : {Ticker : tempStock}} } ,     (documents, err) => {
         if (err) {
             res.send(err);
         }

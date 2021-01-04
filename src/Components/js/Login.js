@@ -283,12 +283,12 @@ function Login() {
 
                             <button
                                 type="submit"
-                                className="btn btn-primary "
+                                className="btn btn-primary col-sm-2"
                                 onMouseDown={() => setSubmitCalled(true)}>
                                 Login
                             </button>
 
-                            <button className="btn btn-light "
+                            <button className="btn btn-secondary col-sm-2"
                                 onClick={moveToRegister}
                                 style={{ margin: '25px' }}>
                                 Sign Up

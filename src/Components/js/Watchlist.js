@@ -81,11 +81,11 @@ function Watchlist() {
     }, [watchlist])
 
     function removeFunction(element) {
-        var removeStock = element 
-
+        var removeStock = element.Ticker 
+        console.log(`this is remove stock ${removeStock}`)
         axios.post(`/api/users/watchlist/remove/${Cookies.get("email")}/${Cookies.get("pass")}/${removeStock}`).then((res)=>{
             console.log(res.data); 
-        }).catch((err)=>{
+        }).then(getWatchlist).catch((err)=>{
             console.log(err); 
         })
     }
@@ -146,14 +146,14 @@ function Watchlist() {
                                         onChange={(evt) => { setTicker(evt.target.value) }}
                                     />
                                 </div>
-                                <div className="row" >
-                                    {feedback}</div>
+                                
+                                    {feedback}
                             </div>
-                            <button className="btn btn-light col-sm-2"
+                            <div className="btn btn-primary col-sm-4"
                                 type="submit"
                                 onClick={addToList}
                                 style={{ margin: '25px' }}>Add Stock
-                            </button>
+                            </div>
 
 
 

@@ -410,18 +410,18 @@ function Register() {
                                 <div className="invalid-feedback">{confirmPassword.error}</div>
                             </div>
 
-                            <button
+                            <div
                                 type="submit"
-                                className="btn btn-primary "
+                                className="btn btn-primary col-sm-2"
                                 onMouseDown={() => setSubmitCalled(true)}>
                                 Sign Up
-                            </button>
+                            </div>
 
-                            <button className="btn btn-light "
+                            <div className="btn btn-secondary col-sm-2"
                                 onClick={moveToLogin}
                                 style={{ margin: '25px' }}>
                                 Login
-                            </button>
+                            </div>
 
 
 
