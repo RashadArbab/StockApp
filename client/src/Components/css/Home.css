@@ -1,0 +1,54 @@
+
+
+.tradingView{
+    display: block;
+    margin-top: 10vh; 
+    margin-left: auto;
+    margin-right: auto;
+    width: 75vw;
+    height: 60vh; 
+    border-radius: 5px;
+}
+
+.body{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+}
+
+
+
+
+.contain{
+    display: flex;
+    justify-content: center;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+.contain2{
+    display: flex;
+    justify-content: center;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.StickyNav{
+    position:sticky !important ;
+    top:0px;
+    z-index: 999;
+}
+
+.navbar {
+    width: 100%;
+    background-color: #333333 !important;
+
+}
+
+
+.nav-link {
+    color: #dddddd
+}
+
+

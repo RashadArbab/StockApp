@@ -1,0 +1,27 @@
+
+
+body {
+    padding-right: 15px; 
+    padding-bottom: 50px;
+}
+
+.form { 
+    padding: 50px;
+    
+}
+.list-group-item {
+    font-size:25px; 
+    color : #eeeeee ;
+    font-weight: 400;
+    background-color: aqua;
+}
+
+.list-group-item:hover{
+    color: #eeeeee; 
+    font-size: 27px;
+    font-weight: 500;
+}
+
+.btn{
+    justify-content: center;
+}
